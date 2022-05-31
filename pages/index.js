@@ -9,8 +9,8 @@ import useTickers from '../hooks/useTickers';
 import useTicker from '../hooks/useTicker';
 
 export default function Home() {
-  const [tickers_results, tickers_loading, tickers_fetched, tickers_error] = useTickers();
-  const [ticker_result, ticker_loading, ticker_fetched, ticker_error, getTickerAPI] = useTicker();
+  const [tickers_results, tickers_loading, tickers_fetched] = useTickers();
+  const [ticker_result, ticker_loading, ticker_fetched, getTickerAPI] = useTicker();
   const [timeframe, setTimeframe] = useState("day")
   const [tickerID, setTickerID] = useState(1)
   const setTicker = (newId, time) => {

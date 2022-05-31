@@ -1,5 +1,4 @@
 import styles from '../styles/Layout.module.css'
-import type { AppProps } from 'next/app'
 
 
 const Layout = ({ children }: any) => {

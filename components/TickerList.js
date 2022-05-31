@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Ticker from './Ticker'
 import styles from '../styles/TickerList.module.css'
 

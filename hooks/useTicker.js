@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import watchdog from '../pages/api/watchdog';
 
 export default () => {

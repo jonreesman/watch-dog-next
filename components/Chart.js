@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import styles from '../styles/Chart.module.css'
 
@@ -49,7 +49,6 @@ const data = [
 
 const merge = (sentimentHistory, quoteHistory) => {
   let result = [];
-  //console.log("merge called with " + quoteHistory + " and " + sentimentHistory);
   if (quoteHistory.length === 0 || quoteHistory === undefined) {
     return sentimentHistory;
   }
@@ -121,7 +120,7 @@ const setTimeLabels = (dataSet, interval) => {
 }
 
 const setTimeLabel = (time, interval) => {
-  var intervalOptions = new Intl.DateTimeFormat('en-US', {hour: 'numeric'})
+  var intervalOptions
   switch (interval) {
     case "day":
       intervalOptions = new Intl.DateTimeFormat('en-US', {hour: 'numeric'})
@@ -157,7 +156,6 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   var ticker = tickerResult.ticker
   var quoteHistory = [...tickerResult.quote_history]
   var sentimentHistory = [...tickerResult.sentiment_history]
-  var statementHistory = tickerResult.statement_history
 
   if (quoteHistory === undefined) {
     return <div className={styles.container}>
