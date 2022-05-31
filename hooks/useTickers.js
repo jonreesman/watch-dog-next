@@ -24,5 +24,5 @@ export default () => {
     useEffect(() => {
         getTickersAPI()
       },[])
-    return [results, loading, fetched, error];
+    return [results, loading, fetched];
 };

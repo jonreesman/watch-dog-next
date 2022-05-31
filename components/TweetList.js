@@ -6,7 +6,7 @@ const TweetList = ({tweets}) => {
   return (
     <div className={styles.grid}>
         {tweets.map((tweet) => {
-            return <Tweet tweet={tweet}/>
+            return <Tweet key={tweet.ID} tweet={tweet}/>
         })}
     </div>
   )

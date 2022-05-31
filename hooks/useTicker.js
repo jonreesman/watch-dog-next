@@ -22,5 +22,5 @@ export default () => {
             console.log(err);
         }
     }
-    return [results, loading, fetched, error, getTickerAPI]
+    return [results, loading, fetched, getTickerAPI]
 };
