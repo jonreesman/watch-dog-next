@@ -1,0 +1,26 @@
+import { useEffect, useState } from 'react';
+import watchdog from '../pages/api/watchdog';
+
+export default () => {
+    const [results, setResults] = useState([]);
+    const [fetched, setFetched] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("")
+
+    const getTickerAPI = async (id, interval) => {
+        setLoading(true)
+        try {
+            console.log(`/tickers/${id}/time/${interval}`)
+            const response = await watchdog.get(`/tickers/${id}/time/${interval}`, {});
+            setResults(response.data)
+            console.log(response.data)
+            setLoading(false)
+            setFetched(true)
+        } catch (err) {
+            setLoading(false)
+            setError(err)
+            console.log(err);
+        }
+    }
+    return [results, loading, fetched, error, getTickerAPI]
+};
