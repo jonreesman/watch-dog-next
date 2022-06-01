@@ -1,4 +1,4 @@
-import Head from 'next/Head'
+import Head from 'next/head'
 import TickerList from '../components/TickerList'
 import Chart from '../components/Chart'
 import IntervalList from '../components/IntervalList'
