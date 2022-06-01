@@ -106,9 +106,9 @@ export default function Home() {
         </Footer>
       }
     >
-      <Container>
+      <MediaQuery largerThan="md" smallerThan="lg" styles={{display: 'none'}}>
         <Chart tickerResult={ticker_result} fetched={ticker_fetched} timeframe={timeframe} />
-      </Container>
+      </MediaQuery>
     </AppShell>
   )
 }
