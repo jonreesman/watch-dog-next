@@ -69,7 +69,7 @@ const merge = (sentimentHistory, quoteHistory) => {
     result.push({TimeStamp:sentimentHistory[0].TimeStamp, Sentiment:sentimentHistory[0].CurrentPrice})
     sentimentHistory.shift()
   }
-  if (quoteHistory.length) {
+  while (quoteHistory.length) {
     result.push({TimeStamp:quoteHistory[0].TimeStamp, CurrentPrice:quoteHistory[0].CurrentPrice})
     quoteHistory.shift()
   }
