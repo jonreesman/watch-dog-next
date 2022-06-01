@@ -1,14 +1,27 @@
-import Layout from '../components/Layout'
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { MantineProvider } from '@mantine/core';
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function App(props: AppProps) {
+  const { Component, pageProps } = props;
+
   return (
-    <Layout>
-          <h1>Watch-dog</h1>
-          <Component {...pageProps} />
-    </Layout>
-  )
-}
+    <>
+      <Head>
+        <title>Watch-dog</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      </Head>
 
-export default MyApp
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          /** Put your mantine theme override here */
+          colorScheme: 'light',
+        }}
+      >
+        <Component {...pageProps} />
+      </MantineProvider>
+    </>
+  );
+}
