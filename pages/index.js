@@ -41,7 +41,7 @@ export default function Home() {
           <Grid gutter="md" grow>
             {tickers_results.map(ticker => {
               return (
-                <Grid.Col span={4}>
+                <Grid.Col span={4} key={ticker.ID}>
                   <Button variant="filled" onClick={() => setTicker(ticker.Id, )}>
                     {ticker.Name}
                   </Button>
