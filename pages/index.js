@@ -55,9 +55,9 @@ export default function Home() {
         <MediaQuery smallerThan="sm" styles={{ display: 'none'}}>
           <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300}}>
             <Center><Text>Tweets</Text></Center>
-            <ScrollArea scrollbarSize={2}>
-              <TweetList tweets={ticker_result.statement_history}/>
-            </ScrollArea>
+              <ScrollArea scrollbarSize={2}>
+                <TweetList tweets={ticker_result.statement_history}/>
+              </ScrollArea>
           </Aside>
         </MediaQuery>
       }

@@ -82,20 +82,31 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     console.log("Chart loading finished with result:")
     console.log(tickerResult)
   }
-  var ticker = tickerResult.ticker
-  var quoteHistory = [...tickerResult.quote_history]
-  var sentimentHistory = [...tickerResult.sentiment_history]
 
-  if (quoteHistory === undefined) {
+  if (tickerResult.quote_history === undefined) {
     return <div className={styles.container}>
       Loading quote history...
     </div>
   }
-  if (sentimentHistory === undefined) {
+  if (tickerResult.quote_history === null) {
+    return <div className={styles.container}>
+      Unable to retrieve quote history.
+    </div>
+  }
+  if (tickerResult.sentiment_history === undefined) {
     return <div className={styles.container}>
       Loading sentiment history...
     </div>
   }
+  if (tickerResult.sentiment_history === null) {
+    return <div className={styles.container}>
+      Unable to retrieve sentiment history.
+    </div>
+  }
+
+  var ticker = tickerResult.ticker
+  var quoteHistory = [...tickerResult.quote_history]
+  var sentimentHistory = [...tickerResult.sentiment_history]
 
   var d = normalizeXAxis(merge(sentimentHistory, quoteHistory));
   var minTime = d[0].TimeStamp
