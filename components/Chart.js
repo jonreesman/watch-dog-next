@@ -1,4 +1,4 @@
-import React from 'react';
+import { Container, Center, Loader, Text } from '@mantine/core';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import styles from '../styles/Chart.module.css'
 
@@ -75,33 +75,33 @@ const setTimeLabel = (time, interval) => {
 
 const Chart = ({tickerResult, fetched, timeframe}) => {
   if (!fetched || tickerResult === undefined) {
-    return <div className={styles.container}>
-      Loading...
-    </div>
-  } else {
-    console.log("Chart loading finished with result:")
-    console.log(tickerResult)
+    return (
+    <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
+        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Loader size="lg"/>
+          <Text size="md">Loading ticker...</Text>
+        </Center>
+      </Container>
+    )  
   }
 
-  if (tickerResult.quote_history === undefined) {
-    return <div className={styles.container}>
-      Loading quote history...
-    </div>
+  if (tickerResult.quote_history === undefined || tickerResult.quote_history === null) {
+    return (
+      <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
+        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Text size="md">Unable to load ticker quote data.</Text>
+        </Center>
+      </Container>
+    )
   }
-  if (tickerResult.quote_history === null) {
-    return <div className={styles.container}>
-      Unable to retrieve quote history.
-    </div>
-  }
-  if (tickerResult.sentiment_history === undefined) {
-    return <div className={styles.container}>
-      Loading sentiment history...
-    </div>
-  }
-  if (tickerResult.sentiment_history === null) {
-    return <div className={styles.container}>
-      Unable to retrieve sentiment history.
-    </div>
+  if (tickerResult.sentiment_history === undefined || tickerResult.sentiment_history === null) {
+    return (
+    <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
+      <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Text size="md">Unable to load ticker sentiment data.</Text>
+      </Center>
+    </Container>
+    )
   }
 
   var ticker = tickerResult.ticker
@@ -118,7 +118,7 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
     <ResponsiveContainer width="99%" height={300}>
         <LineChart
-          width={800}
+          width={900}
           height={300}
           data={d}
           margin={{

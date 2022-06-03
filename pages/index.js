@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Header, Aside, Footer, Center, Container, Text, Burger, MediaQuery, useMantineTheme, ScrollArea, Button, Grid } from '@mantine/core';
+import { AppShell, Avatar, Box, Navbar, Header, Aside, Footer, Center, Container, Group, Loader, Text, Burger, MediaQuery, useMantineTheme, ScrollArea, Button, Grid } from '@mantine/core';
 import Chart from '../components/Chart'
 import TweetList from '../components/TweetList'
 import React, {useState, useEffect} from 'react'
@@ -25,8 +25,16 @@ export default function Home() {
     getTickerAPI(tickerID, timeframe)
   },[timeframe, tickerID])
 
-  if (tickers_loading) return <div>Loading...</div>;
-  if (ticker_loading) return <div>Loading...</div>;
+  if (tickers_loading)  {
+    return (
+      <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
+        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Loader size="lg"/>
+          <Text size="md">Loading Watch-dog</Text>
+        </Center>
+      </Container>
+    )  
+  }
   if (!tickers_fetched && !tickers_loading) return <div>Unable to communicate with server.</div>;
 
   return (
@@ -34,9 +42,8 @@ export default function Home() {
       padding="md"
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      fixed
       navbar={
-        <Navbar width={{ base: 300}} height={500} p="md" hidden={!opened}>
+        <Navbar width={{ sm: 200, lg: 300}} p="md" hiddenBreakpoint="sm" hidden={!opened}>
           <Center><Text>Stocks and Cryptos</Text></Center>
           <Grid gutter="md" grow>
             {tickers_results.map(ticker => {
@@ -62,8 +69,8 @@ export default function Home() {
         </MediaQuery>
       }
       header={
-        <Header height={70} p="md">
-          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <Header height={70} p="md" style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Group style={{ float: 'left'}}>
             <MediaQuery largerThan="sm" styles={{display: 'none'}}>
               <Burger 
                 opened={opened}
@@ -74,29 +81,36 @@ export default function Home() {
               />
             </MediaQuery>
             <Text>Watch-Dog</Text>
-          </div>
+          </Group>
+          <Group style={{ float: 'right' }}>
+            <Avatar src="https://avatars.githubusercontent.com/u/8878482?v=4" radius="xl"/>
+            <Box sx={{ flex: 1}}>
+              <Text size="sm" weight={500}>Jon Reesman</Text>
+              <Text color="dimmed" size="xs"><a href="http://jonreesman.dev" style={{ textDecoration: 'none', color: 'black' }}>jonreesman.dev</a></Text>
+            </Box>
+          </Group>
         </Header>
       }
       footer={
         <Footer height={60} p="md">
           <Center>
           <Grid gutter="md" grow>
-            <Grid.Col span={2}>
+            <Grid.Col key="day" span={2}>
               <Button variant="filled" onClick={() => setTimeframe("day")}>
                 Day
               </Button>
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col key="week" span={2}>
               <Button variant="filled" onClick={() => setTimeframe("week")}>
                 Week
               </Button>
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col key="month" span={2}>
               <Button variant="filled" onClick={() => setTimeframe("month")}>
                 Month
               </Button>
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col key="2month" span={2}>
               <Button variant="filled" onClick={() => setTimeframe("2month")}>
                 Two Months
               </Button>
