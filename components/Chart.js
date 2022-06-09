@@ -141,7 +141,7 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     <div className={styles.container}>
     <p className={styles.title}>{ticker.Name}</p>
     <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-    <ResponsiveContainer width="99%" height={'80%'} minWidth={200} minHeight={300} maxHeight={800} >
+    <ResponsiveContainer width="99%" height={'80%'} minWidth={200} minHeight={300} maxHeight={800} maxWidth={1200}  >
         <LineChart
           id="chart"
           minHeight={300}
@@ -151,8 +151,8 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
           data={d}
           margin={{
             top: 5,
-            right: 30,
-            left: 20,
+            right: 5,
+            left: 5,
             bottom: 5,
           }}
         >
