@@ -73,6 +73,28 @@ const setTimeLabel = (time, interval) => {
   return intervalOptions.format(new Date(time * 1000))
 }
 
+const getXTickCount = () => {
+  const { innerWidth: width, innerHeight: height } = window
+  if (width > 1200) {
+    return 12
+  }
+  if (width > 800 && width < 1200) {
+    return 8
+  }
+  return 5
+}
+
+const getYTickCount = () => {
+  const { innerWidth: width, innerHeight: height } = window
+  if (height > 1200) {
+    return 12
+  }
+  if (height > 800 && height < 1200) {
+    return 8
+  }
+  return 5
+}
+
 const Chart = ({tickerResult, fetched, timeframe}) => {
   if (!fetched || tickerResult === undefined) {
     return (
@@ -112,12 +134,18 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   var minTime = d[0].TimeStamp
   var maxTime = d[d.length - 1].TimeStamp
 
+  var xTickCount = getXTickCount();
+  var yTickCount = getYTickCount();
+
   return (
     <div className={styles.container}>
     <p className={styles.title}>{ticker.Name}</p>
     <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-    <ResponsiveContainer width="99%" height={'100%'}>
+    <ResponsiveContainer width="99%" height={'80%'} minWidth={200} minHeight={300}>
         <LineChart
+          id="chart"
+          minHeight={300}
+          minWidth={600}
           width={'100%'}
           height={'100%'}
           data={d}
@@ -129,7 +157,7 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickFormatter={(TimeStamp)=>{
+          <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
               return setTimeLabel(TimeStamp, timeframe)
           }}/>
           <YAxis yAxisId="left" scale="log" domain={['auto','auto']} name="$" />
@@ -139,8 +167,8 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
           }}
           formatter={(value)=>value.toFixed(3)} />
           <Legend />
-          <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line yAxisId="right" type="monotone" dataKey="Sentiment" stroke="#82ca9d" />
+          <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} />
+          <Line yAxisId="right" type="monotone" dataKey="Sentiment" stroke="#82ca9d" tickCount={yTickCount}  />
         </LineChart>
       </ResponsiveContainer>
       </div>
