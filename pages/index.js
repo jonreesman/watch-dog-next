@@ -45,17 +45,19 @@ export default function Home() {
       navbar={
         <Navbar width={{ sm: 200, lg: 300}} p="md" hiddenBreakpoint="sm" hidden={!opened}>
           <Center><Text>Stocks and Cryptos</Text></Center>
-          <Grid gutter="md" grow>
-            {tickers_results.map(ticker => {
-              return (
-                <Grid.Col span={4} key={ticker.ID}>
-                  <Button variant="filled" onClick={() => setTicker(ticker.Id, )}>
-                    {ticker.Name}
-                  </Button>
-                </Grid.Col>
-              )
-            })}
-          </Grid>
+          <ScrollArea scrollbarSize={2}>
+            <Grid gutter="md" grow>
+              {tickers_results.map(ticker => {
+                return (
+                  <Grid.Col span={4} key={ticker.ID}>
+                    <Button variant="filled" onClick={() => setTicker(ticker.Id, )}>
+                      {ticker.Name}
+                    </Button>
+                  </Grid.Col>
+                )
+              })}
+            </Grid>
+          </ScrollArea>
         </Navbar>
       }
       aside={
