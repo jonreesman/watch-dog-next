@@ -116,10 +116,10 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     <div className={styles.container}>
     <p className={styles.title}>{ticker.Name}</p>
     <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-    <ResponsiveContainer width="99%" height={300}>
+    <ResponsiveContainer width="99%" height={'100%'}>
         <LineChart
-          width={900}
-          height={300}
+          width={'100%'}
+          height={'100%'}
           data={d}
           margin={{
             top: 5,
