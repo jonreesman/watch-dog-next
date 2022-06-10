@@ -55,7 +55,7 @@ const setTimeLabel = (time, interval) => {
       intervalOptions = new Intl.DateTimeFormat('en-US', {hour: 'numeric'})
       break
     case "week":
-      intervalOptions = new Intl.DateTimeFormat('en-US', {day: "numeric", hour: 'numeric'})
+      intervalOptions = new Intl.DateTimeFormat('en-US', {day: 'numeric'})
       break
     case "month":
       intervalOptions = new Intl.DateTimeFormat('en-US', {day: "numeric", month:"short"})
