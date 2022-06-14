@@ -1,4 +1,5 @@
-import { Container, Center, Loader, Text } from '@mantine/core';
+import React, { useState, useEffect } from 'react';
+import { Container, Center, Loader, Text, useMantineTheme } from '@mantine/core';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import styles from '../styles/Chart.module.css'
 
@@ -44,7 +45,6 @@ const normalizeXAxis = (dataSet) => {
   dataSet.map(item => {
     item.x = (item.TimeStamp - min) / (max-min) * 100
   })
-  console.log(dataSet)
   return dataSet
 }
 
@@ -96,6 +96,19 @@ const getYTickCount = () => {
 }
 
 const Chart = ({tickerResult, fetched, timeframe}) => {
+  const theme = useMantineTheme();
+  const [yTickCount, setYTickCount] = useState(getYTickCount());
+  const [xTickCount, setXTickCount] = useState(getXTickCount());
+  const [sentimentOpacity, setSentimentOpacity] = useState(1);
+  const [priceOpacity, setPriceOpacity] = useState(1);
+
+  useEffect(() => {
+    setYTickCount(getYTickCount())
+  },[window.innerHeight])
+  useEffect(() => {
+    setXTickCount(getXTickCount())
+  },[window.innerWidth])
+
   if (!fetched || tickerResult === undefined) {
     return (
     <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
@@ -134,20 +147,35 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   var minTime = d[0].TimeStamp
   var maxTime = d[d.length - 1].TimeStamp
 
-  var xTickCount = getXTickCount();
-  var yTickCount = getYTickCount();
+  const handleMouseEnter = (o) => {
+    const { dataKey } = o
+    if (dataKey === 'CurrentPrice') {
+      setPriceOpacity(0.5)
+    }
+    if (dataKey === 'Sentiment') {
+      setSentimentOpacity(0.5)
+    }
+  }
+
+  const handleMouseLeave = (o) => {
+    const { dataKey } = o
+    if (dataKey === 'CurrentPrice') {
+      setPriceOpacity(1)
+    }
+    if (dataKey === 'Sentiment') {
+      setSentimentOpacity(1)
+    }
+  }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2]}}>
     <p className={styles.title}>{ticker.Name}</p>
     <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-    <ResponsiveContainer width="99%" height={'80%'} minWidth={200} minHeight={300} maxHeight={1000} maxWidth={1200}  >
+    <ResponsiveContainer width={"99%"} height={'80%'}  >
         <LineChart
           id="chart"
-          minHeight={300}
-          minWidth={600}
-          width={'100%'}
-          height={'100%'}
+          width={200}
+          height={300}
           data={d}
           margin={{
             top: 5,
@@ -160,15 +188,15 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
           <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
               return setTimeLabel(TimeStamp, timeframe)
           }}/>
-          <YAxis yAxisId="left" scale="log" domain={['auto','auto']} name="$" />
-          <YAxis yAxisId="right" orientation="right" />
+          <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} name="$" />
+          <YAxis yAxisId="right" tickCount={yTickCount} orientation="right" />
           <Tooltip labelFormatter={(value)=>{
               return setTimeLabel(value, "full")
           }}
           formatter={(value)=>value.toFixed(3)} />
-          <Legend />
-          <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} />
-          <Line yAxisId="right" type="monotone" dataKey="Sentiment" stroke="#82ca9d" tickCount={yTickCount}  />
+          <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+          <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" strokeOpacity={priceOpacity} stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} />
+          <Line yAxisId="right" type="monotone" dataKey="Sentiment" strokeOpacity={sentimentOpacity} stroke="#82ca9d" tickCount={yTickCount}  />
         </LineChart>
       </ResponsiveContainer>
       </div>
