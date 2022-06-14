@@ -8,7 +8,7 @@ const TweetList = ({tweets}) => {
     <Grid justify="center">
         {tweets.map((tweet) => {
             return (
-            <Grid.Col span={12}>
+            <Grid.Col key={tweet.ID} span={12}>
               <Tweet key={tweet.ID} tweet={tweet}/>
             </Grid.Col>
             )

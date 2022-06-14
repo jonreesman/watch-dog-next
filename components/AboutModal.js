@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Text } from '@mantine/core';
 
 const AboutModal = () => {
@@ -14,4 +14,4 @@ const AboutModal = () => {
   )
 }
 
-export default AboutModal
+export default AboutModal;
