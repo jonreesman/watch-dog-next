@@ -1,14 +1,9 @@
-import { AppShell, Avatar, Box, Navbar, Header, Aside, Footer, Center, Container, Group, Loader, Text, Modal, Burger, MediaQuery, useMantineTheme, ScrollArea, Button, Grid } from '@mantine/core';
+import { Center, Container, Loader, Text } from '@mantine/core';
 import MainWindow from './_appshell'
-import Chart from '../components/Chart'
-import AboutModal from '../components/AboutModal';
-import TweetList from '../components/TweetList'
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import useTickers from '../hooks/useTickers';
-import useTicker from '../hooks/useTicker';
 
 export default function Home() {
-  const theme = useMantineTheme();
   const [tickers_results, tickers_loading, tickers_fetched] = useTickers();
 
   if (tickers_loading)  {

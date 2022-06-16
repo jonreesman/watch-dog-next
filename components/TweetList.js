@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Container, Center, Loader, Grid } from '@mantine/core';
+import { Grid } from '@mantine/core';
 import Tweet from './Tweet'
 
 const TweetList = ({tweets}) => {

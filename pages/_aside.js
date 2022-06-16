@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppShell, Avatar, Box, Navbar, Header, Aside, Footer, Center, Container, Group, Loader, Text, Modal, Burger, MediaQuery, useMantineTheme, ScrollArea, Button, Grid } from '@mantine/core';
+import { Aside, Center, Container, Loader, Text, MediaQuery, ScrollArea } from '@mantine/core';
 import TweetList from '../components/TweetList'
 
 const TweetAside = ({statement_history}) => {
