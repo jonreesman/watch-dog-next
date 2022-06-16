@@ -74,7 +74,7 @@ const setTimeLabel = (time, interval) => {
 }
 
 const getXTickCount = () => {
-  const { innerWidth: width, innerHeight: height } = window
+  const { innerWidth: width } = window
   if (width > 1200) {
     return 12
   }
@@ -85,7 +85,7 @@ const getXTickCount = () => {
 }
 
 const getYTickCount = () => {
-  const { innerWidth: width, innerHeight: height } = window
+  const { innerHeight: height } = window
   if (height > 1200) {
     return 12
   }
@@ -99,6 +99,9 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   const theme = useMantineTheme();
   const [yTickCount, setYTickCount] = useState(getYTickCount());
   const [xTickCount, setXTickCount] = useState(getXTickCount());
+  const [sentimentGraphScale, setSentimentGraphScale] = useState("auto");
+  const [priceGraphScale, setPriceGraphScale] = useState("log");
+
   const [sentimentOpacity, setSentimentOpacity] = useState(1);
   const [priceOpacity, setPriceOpacity] = useState(1);
 
@@ -169,36 +172,36 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
 
   return (
     <div className={styles.container} style={{ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2]}}>
-    <p className={styles.title}>{ticker.Name}</p>
-    <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-    <ResponsiveContainer width={"99%"} height={'80%'}  >
-        <LineChart
-          id="chart"
-          width={200}
-          height={300}
-          data={d}
-          margin={{
-            top: 5,
-            right: 5,
-            left: 5,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
-              return setTimeLabel(TimeStamp, timeframe)
-          }}/>
-          <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} name="$" />
-          <YAxis yAxisId="right" tickCount={yTickCount} orientation="right" />
-          <Tooltip labelFormatter={(value)=>{
-              return setTimeLabel(value, "full")
-          }}
-          formatter={(value)=>value.toFixed(3)} />
-          <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-          <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" strokeOpacity={priceOpacity} stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} />
-          <Line yAxisId="right" type="monotone" dataKey="Sentiment" strokeOpacity={sentimentOpacity} stroke="#82ca9d" tickCount={yTickCount}  />
-        </LineChart>
-      </ResponsiveContainer>
+      <p className={styles.title}>{ticker.Name}</p>
+      <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
+      <ResponsiveContainer width={"99%"} height={'80%'}  >
+          <LineChart
+            id="chart"
+            width={200}
+            height={300}
+            data={d}
+            margin={{
+              top: 5,
+              right: 5,
+              left: 5,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
+                return setTimeLabel(TimeStamp, timeframe)
+            }}/>
+            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} name="$" />
+            <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} orientation="right" />
+            <Tooltip labelFormatter={(value)=>{
+                return setTimeLabel(value, "full")
+            }}
+            formatter={(value)=>value.toFixed(3)} />
+            <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+            <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" strokeOpacity={priceOpacity} stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} connectNulls />
+            <Line yAxisId="right" type="basis" dataKey="Sentiment" strokeOpacity={sentimentOpacity} stroke="#82ca9d" tickCount={yTickCount} connectNulls  />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
   )
 }
