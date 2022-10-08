@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import watchdog from '../pages/api/watchdog';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     const [results, setResults] = useState([]);
     const [fetched, setFetched] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("")
+    const [, setError] = useState("")
 
     const getTickerAPI = async (id, interval) => {
         setLoading(true)

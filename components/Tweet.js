@@ -11,6 +11,7 @@ const Tweet = ({tweet}) => {
           <Text size="sm">{tweet.Expression}</Text>
           <Text size="xs">Likes: {tweet.Likes} Replies: {tweet.Replies} Retweets {tweet.Retweets}</Text>
           <Text size="xs">Sentiment Score: {tweet.Polarity}</Text>
+          <Text>Spam: {tweet.Spam ? "Spam" : "Ham"}</Text>
         </Card>
       </a>
     </Container>
