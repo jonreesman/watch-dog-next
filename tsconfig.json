@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Chart.js", "components/TickerList.js", "pages/index.js", "hooks/useTickers.js", "components/Layout.js", "components/Ticker.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Chart.js", "components/TickerList.js", "pages/index.tsx", "hooks/useTickers.ts", "components/Layout.js", "components/Ticker.js", "components/_footer.js", "pages/App.js"],
   "exclude": ["node_modules"]
 }
