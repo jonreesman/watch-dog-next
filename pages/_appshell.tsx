@@ -40,7 +40,7 @@ const MainWindow: React.FC<Props> = ({tickers}) => {
           padding="md"
           navbarOffsetBreakpoint="sm"
           asideOffsetBreakpoint="sm"
-          navbar={<CustomNavBar opened={opened} tickers={tickers} setTicker={setTicker} setModalOpened={setModalOpened} />}
+          navbar={<CustomNavBar opened={opened} tickers={tickers} setTicker={setTicker} setModalOpened={setModalOpened} tickerID={tickerID} />}
           header={
             <Header height={70} p="md" style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Group style={{ float: 'left'}}>
@@ -78,7 +78,7 @@ const MainWindow: React.FC<Props> = ({tickers}) => {
             </Tabs.List>
             <Tabs.Panel value="chart">
               {ticker_result && ticker_fetched
-              ? <Chart tickerResult={ticker_result} fetched={ticker_fetched} timeframe={timeframe} />
+              ? <Chart tickerResult={ticker_result} fetched={ticker_fetched} timeframe={timeframe} navbarOpened={opened} />
               : <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
                     <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
                       <Loader size="lg"/>

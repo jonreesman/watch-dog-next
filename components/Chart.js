@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Center, Loader, Text, useMantineTheme } from '@mantine/core';
+import { Container, Center, Loader, Text, useMantineTheme, MediaQuery, Paper } from '@mantine/core';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 import styles from '../styles/Chart.module.css'
 
@@ -95,7 +95,7 @@ const getYTickCount = () => {
   return 5
 }
 
-const Chart = ({tickerResult, fetched, timeframe}) => {
+const Chart = ({tickerResult, fetched, timeframe, navbarOpened}) => {
   const theme = useMantineTheme();
   const [yTickCount, setYTickCount] = useState(getYTickCount());
   const [xTickCount, setXTickCount] = useState(getXTickCount());
@@ -151,21 +151,12 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   }
 
   return (
-    <div
-      style={{ 
-          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2],
-          width: "100%",
-          height: "70vh",
-          borderRadius: "20px",
-          overflow: "clip",
-        }}>
-      <p className={styles.title}>{ticker.Name}</p>
-      <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-      <ResponsiveContainer width={"99%"} height={'80%'}  >
+    <div style={{position: "relative"}}>
+      <ResponsiveContainer width={"99%"} aspect={1.8} style={{position: "absolute"}} >
           <LineChart
             id="chart"
-            width={"100%"}
-            aspect={"0.5"}
+            width={'100%'}
+            aspect={0.9}
             debounce={1}
             data={d}
             margin={{
@@ -174,18 +165,17 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
               left: 5,
               bottom: 5,
             }}
-          >
+            >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
-                return setTimeLabel(TimeStamp, timeframe)
+              return setTimeLabel(TimeStamp, timeframe)
             }}/>
-            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} name="$" />
-            <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} orientation="right" />
+            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} mirror name="$" />
+            <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} mirror orientation="right" />
             <Tooltip labelFormatter={(value)=>{
-                return setTimeLabel(value, "full")
+              return setTimeLabel(value, "full")
             }}
             formatter={(value)=>value.toFixed(3)} />
-            <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
             <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" strokeOpacity={priceOpacity} stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} connectNulls />
             <Line yAxisId="right" type="basis" dataKey="Sentiment" strokeOpacity={sentimentOpacity} stroke="#82ca9d" tickCount={yTickCount} connectNulls  />
           </LineChart>

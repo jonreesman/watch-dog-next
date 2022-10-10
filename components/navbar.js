@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Navbar, Divider, Center, Text, useMantineTheme, Slider, ScrollArea, Button, Grid } from '@mantine/core';
+import { Box, Navbar, Divider, Center, Text, useMantineTheme, Slider, ScrollArea, Button, MultiSelect, Grid } from '@mantine/core';
 
 
 
-const CustomNavBar = ({opened, tickers, setTicker, setModalOpened}) => {
+const CustomNavBar = ({opened, tickers, setTicker, setModalOpened, tickerID}) => {
   const theme = useMantineTheme();
   const MARKS = [
     { value: 0, label: 'day', data: 'day' },
@@ -11,7 +11,6 @@ const CustomNavBar = ({opened, tickers, setTicker, setModalOpened}) => {
     { value: 50, label: 'month', data: 'month' },
     { value: 75, label: 'two months', data: '2month' },
   ];
-  
   return (
     <Navbar width={{ sm: 200, lg: 300}} p="md" hiddenBreakpoint="sm" hidden={!opened}>
       <Navbar.Section>
@@ -19,17 +18,36 @@ const CustomNavBar = ({opened, tickers, setTicker, setModalOpened}) => {
       </Navbar.Section>
       <Navbar.Section 
         grow component={ScrollArea} width={{ sm: 200, lg: 300 }}>
-        <Grid gutter="md" justify="space-between" style={{width: "100%"}}>
+        <Grid gutter="md" justify="space-between" grow>
                   {tickers?.map(ticker => {
                     return (
                       <Grid.Col span={4} lg={4} md={2} key={ticker.ID}>
-                        <Button variant="filled" onClick={() => setTicker(ticker.Id, )}>
+                        <Button variant="light" onClick={() => setTicker(ticker.Id, )}>
                           {ticker.Name}
                         </Button>
                       </Grid.Col>
                     )
                   })}
                 </Grid>
+        {/*<MultiSelect
+        data={tickers.map((ticker)=> {
+          const tick = {
+            value: ticker.Name,
+            label: ticker.Name,
+            id: ticker.Id
+          }
+          return tick
+        })}
+        onChange={(ticker) => {
+          console.log(ticker)
+          setTicker(ticker.id)
+        }}
+        maxSelectedValues={1}
+        placeholder="Pick one"
+        searchable
+        nothingFound="Nothing found"
+      />*/}
+
         </Navbar.Section>
         <Navbar.Section>
           <Divider my="sm" />
