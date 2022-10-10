@@ -39,10 +39,12 @@ const TweetList: React.FC<any> = ({tweets}) => {
   const [queryString, setQueryString] = useState<string>("");
   return (
     <>
-    <TweetSearch setQueryString={setQueryStrings} />
+    <TweetSearch queryStrings={queryStrings} setQueryStrings={setQueryStrings} />
     <Grid grow justify="center">
         {tweets.map((tweet: any) => {
-          if (!findOverlap(tweet.Expression, queryStrings)) {
+          if (!findOverlap(tweet.Expression, queryStrings) && queryStrings.length > 0) {
+            console.log("no overlap with: ")
+            console.log(queryStrings)
             return;
           }
           return (
