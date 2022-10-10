@@ -112,26 +112,6 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     setXTickCount(getXTickCount())
   },[window.innerWidth])
 
-  if (!fetched || tickerResult === undefined) {
-    return (
-    <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
-        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Loader size="lg"/>
-          <Text size="md">Loading ticker...</Text>
-        </Center>
-      </Container>
-    )  
-  }
-
-  if (tickerResult.quote_history === undefined || tickerResult.quote_history === null) {
-    return (
-      <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
-        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Text size="md">Unable to load ticker quote data.</Text>
-        </Center>
-      </Container>
-    )
-  }
   if (tickerResult.sentiment_history === undefined || tickerResult.sentiment_history === null) {
     return (
     <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
@@ -171,14 +151,22 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   }
 
   return (
-    <div className={styles.container} style={{ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2]}}>
+    <div
+      style={{ 
+          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2],
+          width: "100%",
+          height: "70vh",
+          borderRadius: "20px",
+          overflow: "clip",
+        }}>
       <p className={styles.title}>{ticker.Name}</p>
       <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
       <ResponsiveContainer width={"99%"} height={'80%'}  >
           <LineChart
             id="chart"
-            width={200}
-            height={300}
+            width={"100%"}
+            aspect={"0.5"}
+            debounce={1}
             data={d}
             margin={{
               top: 5,
