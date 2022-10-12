@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import watchdog from '../pages/api/watchdog';
+import watchdog from '../api/watchdog';
 
-export default () => {
+
+
+export default (): [any, boolean, boolean] => {
     const [results, setResults] = useState([]);
     const [fetched, setFetched] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("")
 
     const getTickersAPI = async () => {
         setLoading(true)
@@ -17,7 +18,6 @@ export default () => {
             setLoading(false)
         } catch (err) {
             setLoading(false)
-            setError(err)
             console.log(err);
         }
     }

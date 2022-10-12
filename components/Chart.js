@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Center, Loader, Text, useMantineTheme } from '@mantine/core';
+import { Container, Center, Loader, Text, useMantineTheme, MediaQuery, Paper } from '@mantine/core';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
-import styles from '../styles/Chart.module.css'
 
 const merge = (sentimentHistory, quoteHistory) => {
   let result = [];
@@ -95,12 +94,10 @@ const getYTickCount = () => {
   return 5
 }
 
-const Chart = ({tickerResult, fetched, timeframe}) => {
+const Chart = ({tickerResult, fetched, timeframe, navbarOpened}) => {
   const theme = useMantineTheme();
   const [yTickCount, setYTickCount] = useState(getYTickCount());
   const [xTickCount, setXTickCount] = useState(getXTickCount());
-  const [sentimentGraphScale, setSentimentGraphScale] = useState("auto");
-  const [priceGraphScale, setPriceGraphScale] = useState("log");
 
   const [sentimentOpacity, setSentimentOpacity] = useState(1);
   const [priceOpacity, setPriceOpacity] = useState(1);
@@ -112,26 +109,6 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     setXTickCount(getXTickCount())
   },[window.innerWidth])
 
-  if (!fetched || tickerResult === undefined) {
-    return (
-    <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
-        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Loader size="lg"/>
-          <Text size="md">Loading ticker...</Text>
-        </Center>
-      </Container>
-    )  
-  }
-
-  if (tickerResult.quote_history === undefined || tickerResult.quote_history === null) {
-    return (
-      <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
-        <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Text size="md">Unable to load ticker quote data.</Text>
-        </Center>
-      </Container>
-    )
-  }
   if (tickerResult.sentiment_history === undefined || tickerResult.sentiment_history === null) {
     return (
     <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
@@ -142,7 +119,6 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
     )
   }
 
-  var ticker = tickerResult.ticker
   var quoteHistory = [...tickerResult.quote_history]
   var sentimentHistory = [...tickerResult.sentiment_history]
 
@@ -150,35 +126,14 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
   var minTime = d[0].TimeStamp
   var maxTime = d[d.length - 1].TimeStamp
 
-  const handleMouseEnter = (o) => {
-    const { dataKey } = o
-    if (dataKey === 'CurrentPrice') {
-      setPriceOpacity(0.5)
-    }
-    if (dataKey === 'Sentiment') {
-      setSentimentOpacity(0.5)
-    }
-  }
-
-  const handleMouseLeave = (o) => {
-    const { dataKey } = o
-    if (dataKey === 'CurrentPrice') {
-      setPriceOpacity(1)
-    }
-    if (dataKey === 'Sentiment') {
-      setSentimentOpacity(1)
-    }
-  }
-
   return (
-    <div className={styles.container} style={{ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.blue[2]}}>
-      <p className={styles.title}>{ticker.Name}</p>
-      <p className={styles.subtitle}>{setTimeLabel(minTime,"full")}-{setTimeLabel(maxTime,"full")}</p>
-      <ResponsiveContainer width={"99%"} height={'80%'}  >
+    <div style={{position: "relative"}}>
+      <ResponsiveContainer width={"99%"} aspect={1.8} style={{position: "absolute"}} >
           <LineChart
             id="chart"
-            width={200}
-            height={300}
+            width={'100%'}
+            aspect={0.9}
+            debounce={1}
             data={d}
             margin={{
               top: 5,
@@ -186,18 +141,20 @@ const Chart = ({tickerResult, fetched, timeframe}) => {
               left: 5,
               bottom: 5,
             }}
-          >
+            >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
-                return setTimeLabel(TimeStamp, timeframe)
+              return setTimeLabel(TimeStamp, timeframe)
             }}/>
-            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} name="$" />
-            <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} orientation="right" />
+            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} mirror name="$" 
+              tickFormatter={(val) => {
+                return '$' + val;
+              }} />
+            <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} mirror orientation="right" />
             <Tooltip labelFormatter={(value)=>{
-                return setTimeLabel(value, "full")
+              return setTimeLabel(value, "full")
             }}
             formatter={(value)=>value.toFixed(3)} />
-            <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
             <Line yAxisId="left" type="monotone" dataKey="CurrentPrice" strokeOpacity={priceOpacity} stroke="#8884d8" activeDot={{ r: 8 }} tickCount={yTickCount} connectNulls />
             <Line yAxisId="right" type="basis" dataKey="Sentiment" strokeOpacity={sentimentOpacity} stroke="#82ca9d" tickCount={yTickCount} connectNulls  />
           </LineChart>

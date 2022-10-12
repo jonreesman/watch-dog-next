@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import watchdog from '../pages/api/watchdog';
+import watchdog from '../api/watchdog';
 
-export default () => {
+export default (): [any, boolean, boolean, (arg0: number, arg1: string) => Promise<void>] => {
     const [results, setResults] = useState([]);
     const [fetched, setFetched] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("")
 
-    const getTickerAPI = async (id, interval) => {
+    const getTickerAPI = async (id: number, interval: string) => {
         setLoading(true)
         try {
             console.log(`/tickers/${id}/time/${interval}`)
@@ -18,7 +17,6 @@ export default () => {
             setFetched(true)
         } catch (err) {
             setLoading(false)
-            setError(err)
             console.log(err);
         }
     }
