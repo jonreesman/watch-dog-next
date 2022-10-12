@@ -49,9 +49,9 @@ const TweetList: React.FC<any> = ({tweets}) => {
           }
           return (
             <Grid.Col key={tweet.ID} span={12}>
-                <Card shadow="sm" p="lg" radius="sm" withBorder>
+                <Card shadow="sm" p="lg" radius="sm" withBorder style={{overflow: 'hidden'}}>
                     <a href={tweet.PermanentURL} style={{ height: "100%", width: "100%", textDecoration: "none"}}>
-                      <Text color="dark">{tweet.Expression}</Text>
+                      <Text style={{wordBreak: 'break-word'}} color="dark">{tweet.Expression}</Text>
                     </a>
                     <Group spacing={0}>
                       <Tooltip label="Likes">

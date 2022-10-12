@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Navbar, Divider, Center, Text, useMantineTheme, Slider, ScrollArea, Button, MultiSelect, Grid } from '@mantine/core';
+import { Box, Navbar, Divider, Center, Text, useMantineTheme, Slider, ScrollArea, Button, NativeSelect, Grid } from '@mantine/core';
 
 
 
@@ -18,35 +18,21 @@ const CustomNavBar = ({opened, tickers, setTicker, setModalOpened, tickerID}) =>
       </Navbar.Section>
       <Navbar.Section 
         grow component={ScrollArea} width={{ sm: 200, lg: 300 }}>
-        <Grid gutter="md" justify="space-between" grow>
-                  {tickers?.map(ticker => {
-                    return (
-                      <Grid.Col span={4} lg={4} md={2} key={ticker.ID}>
-                        <Button variant="light" onClick={() => setTicker(ticker.Id, )}>
-                          {ticker.Name}
-                        </Button>
-                      </Grid.Col>
-                    )
-                  })}
-                </Grid>
-        {/*<MultiSelect
-        data={tickers.map((ticker)=> {
-          const tick = {
-            value: ticker.Name,
-            label: ticker.Name,
-            id: ticker.Id
-          }
-          return tick
-        })}
-        onChange={(ticker) => {
-          console.log(ticker)
-          setTicker(ticker.id)
-        }}
-        maxSelectedValues={1}
-        placeholder="Pick one"
-        searchable
-        nothingFound="Nothing found"
-      />*/}
+        <NativeSelect
+          data={tickers?.map(ticker => {
+              const item = {
+                value: ticker.Id,
+                label: ticker.Name
+              }
+              return item
+          })}
+          value={tickerID}
+          onChange={(event) => {
+            setTicker(event.target.value, )
+            console.log(event.target.value)
+          }}
+          label="Select a stock"
+          />
 
         </Navbar.Section>
         <Navbar.Section>

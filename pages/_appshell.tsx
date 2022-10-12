@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Timeframes from '../components/footer';
 import CustomNavBar from '../components/navbar';
 import { AppShell, Avatar, Box, Container, Header, Group, Text, Modal, Burger, MediaQuery, useMantineTheme, Loader, Center, Tabs } from '@mantine/core';
 import Chart from '../components/Chart'
-import TweetAside from '../components/aside';
 import AboutModal from '../components/AboutModal';
 import useTicker from '../hooks/useTicker';
 import TweetList from '../components/TweetList';
@@ -81,7 +79,6 @@ const MainWindow: React.FC<Props> = ({tickers}) => {
               ? <Chart tickerResult={ticker_result} fetched={ticker_fetched} timeframe={timeframe} navbarOpened={opened} />
               : <Container style={{ position: 'fixed', top: '50%', left: '50%' }}>
                     <Center style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                      <Loader size="lg"/>
                       <Text size="md">Loading ticker...</Text>
                     </Center>
                   </Container>

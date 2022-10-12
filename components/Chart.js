@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Center, Loader, Text, useMantineTheme, MediaQuery, Paper } from '@mantine/core';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts'
-import styles from '../styles/Chart.module.css'
 
 const merge = (sentimentHistory, quoteHistory) => {
   let result = [];
@@ -99,8 +98,6 @@ const Chart = ({tickerResult, fetched, timeframe, navbarOpened}) => {
   const theme = useMantineTheme();
   const [yTickCount, setYTickCount] = useState(getYTickCount());
   const [xTickCount, setXTickCount] = useState(getXTickCount());
-  const [sentimentGraphScale, setSentimentGraphScale] = useState("auto");
-  const [priceGraphScale, setPriceGraphScale] = useState("log");
 
   const [sentimentOpacity, setSentimentOpacity] = useState(1);
   const [priceOpacity, setPriceOpacity] = useState(1);
@@ -122,33 +119,12 @@ const Chart = ({tickerResult, fetched, timeframe, navbarOpened}) => {
     )
   }
 
-  var ticker = tickerResult.ticker
   var quoteHistory = [...tickerResult.quote_history]
   var sentimentHistory = [...tickerResult.sentiment_history]
 
   var d = normalizeXAxis(merge(sentimentHistory, quoteHistory));
   var minTime = d[0].TimeStamp
   var maxTime = d[d.length - 1].TimeStamp
-
-  const handleMouseEnter = (o) => {
-    const { dataKey } = o
-    if (dataKey === 'CurrentPrice') {
-      setPriceOpacity(0.5)
-    }
-    if (dataKey === 'Sentiment') {
-      setSentimentOpacity(0.5)
-    }
-  }
-
-  const handleMouseLeave = (o) => {
-    const { dataKey } = o
-    if (dataKey === 'CurrentPrice') {
-      setPriceOpacity(1)
-    }
-    if (dataKey === 'Sentiment') {
-      setSentimentOpacity(1)
-    }
-  }
 
   return (
     <div style={{position: "relative"}}>
@@ -170,7 +146,10 @@ const Chart = ({tickerResult, fetched, timeframe, navbarOpened}) => {
             <XAxis dataKey="TimeStamp" type="number" domain={['dataMin', 'dataMax']} tickCount={xTickCount} tickFormatter={(TimeStamp)=>{
               return setTimeLabel(TimeStamp, timeframe)
             }}/>
-            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} mirror name="$" />
+            <YAxis yAxisId="left" scale="log" tickCount={yTickCount} domain={['auto','auto']} mirror name="$" 
+              tickFormatter={(val) => {
+                return '$' + val;
+              }} />
             <YAxis yAxisId="right" scale="auto" tickCount={yTickCount} mirror orientation="right" />
             <Tooltip labelFormatter={(value)=>{
               return setTimeLabel(value, "full")
